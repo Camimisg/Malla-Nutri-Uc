@@ -1,38 +1,23 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Malla Curricular - Nutrición y Dietética</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      background: linear-gradient(to right, #f3e5f5, #ede7f6);
+      background: linear-gradient(to right, #e6e0f2, #d9d3ef);
       margin: 0;
       padding: 2rem;
       overflow-x: auto;
     }
     h1 {
       text-align: center;
-      color: #4a148c;
+      color: #3f2a69;
       font-size: 2rem;
       margin-bottom: 2rem;
-    }
-    #resetBtn {
-      display: block;
-      margin: 0 auto 2rem;
-      padding: 0.6rem 1.5rem;
-      background-color: #6a1b9a;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: background 0.3s;
-    }
-    #resetBtn:hover {
-      background-color: #4a148c;
     }
     #malla {
       display: flex;
@@ -48,32 +33,48 @@
     }
     .semestre h2 {
       margin-bottom: 1rem;
-      color: #6a1b9a;
-      border-left: 4px solid #6a1b9a;
+      color: #5b4b8a;
+      border-left: 4px solid #5b4b8a;
       padding-left: 1rem;
     }
     .curso {
       margin: 0.5rem 0;
       padding: 0.75rem 1rem;
       border-radius: 10px;
-      background-color: #e1bee7;
+      background-color: #b3a0d5;
       cursor: pointer;
       transition: background-color 0.2s, transform 0.2s;
       box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      color: #2f2a44;
     }
     .curso:hover {
-      background-color: #ce93d8;
+      background-color: #9b89c7;
       transform: scale(1.01);
     }
     .bloqueado {
-      background-color: #f3e5f5 !important;
+      background-color: #dbd5e8 !important;
       color: #999;
       cursor: not-allowed;
     }
     .completado {
-      background-color: #d1c4e9 !important;
-      color: #4a148c;
+      background-color: #a89fce !important;
+      color: #3f2a69;
       text-decoration: line-through;
+    }
+    #resetBtn {
+      display: block;
+      margin: 2rem auto 0;
+      padding: 0.6rem 1.5rem;
+      background-color: #5b4b8a;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.3s;
+    }
+    #resetBtn:hover {
+      background-color: #3f2a69;
     }
     @media (max-width: 768px) {
       #malla {
@@ -87,71 +88,73 @@
   </style>
 </head>
 <body>
-  <h1>Malla Curricular Interactiva - Nutrición y Dietética</h1>
-  <button id="resetBtn">🔁 Reiniciar progreso</button>
+  <h1>Malla Curricular - Nutrición y Dietética</h1>
+
   <div id="malla"></div>
+
+  <button id="resetBtn">Reiniciar progreso</button>
 
   <script>
     const cursos = {
-  "MAT100": { nombre: "Precálculo" },
-  "QIM201A": { nombre: "Química" },
-  "BIO141C": { nombre: "Biología de la Célula" },
-  "MEN102A": { nombre: "Morfología Humana" },
-  "NUT105A": { nombre: "Alimentos" },
-  "NUT101A": { nombre: "Introducción a la Nutrición" },
-  "FIS109N": { nombre: "Física para Nutrición", req: ["MAT100"] },
-  "QIM202N": { nombre: "Bioquímica General para Nutrición", req: ["QIM201A"] },
-  "BIO135N": { nombre: "Fisiología", req: ["MEN102A", "BIO141C"] },
-  "NUT106A": { nombre: "Ciencias de los Alimentos", req: ["QIM201A", "NUT105A"] },
-  "NUT107A": { nombre: "Técnicas Dietéticas y Planificación Alimentaria", req: ["NUT105A"] },
-  "MEN201B": { nombre: "Bioestadística", req: ["MAT100"] },
-  "NUT207A": { nombre: "Nutrición Básica", req: ["BIO135N", "QIM202N"] },
-  "MEN207A": { nombre: "Fisiopatología General", req: ["BIO135N"] },
-  "MEN302B": { nombre: "Microbiología e Higiene de los Alimentos", req: ["NUT105A", "NUT106A"] },
-  "TTF": { nombre: "Formación Teológica" },
-  "NUT208A": { nombre: "Integrado de Nutrición Humana Pediátrica", req: ["MEN207A", "NUT207A"] },
-  "NUT209A": { nombre: "Salud Pública y Epidemiológica Nutricional", req: ["NUT207A", "MEN201B"] },
-  "NUT204A": { nombre: "Fisiopatología Nutricional", req: ["MEN207A"] },
-  "MEN206A": { nombre: "Farmacología para Nutrición", req: ["NUT106A", "MEN207A"] },
-  "NUT211A": { nombre: "Nutrición y Deporte", req: ["NUT207A"] },
-  "NUT212A": { nombre: "Conducta Alimentaria", req: ["NUT207A"] },
-  "NUT305A": { nombre: "Integrado de Nutrición Humana del Adulto", req: ["NUT207A", "MEN302B"] },
-  "NUT306A": { nombre: "Educación Alimentaria", req: ["NUT212A", "NUT209A"] },
-  "NUT307A": { nombre: "Promoción, Prevención e Intervenciones Nutricionales", req: ["NUT209A"] },
-  "NUT308A": { nombre: "Integrado de Nutrición Clínica General", req: ["NUT207A", "MEN302B", "NUT204A"] },
-  "FIL2001": { nombre: "Filosofía" },
-  "IIQ2643": { nombre: "Procesamiento de Alimentos", req: ["MEN302B"] },
-  "NUT309A": { nombre: "Ética para Nutrición", req: ["NUT305A", "NUT308A"] },
-  "NUT310A": { nombre: "Integrado de Nutrición Clínica Adulto", req: ["NUT306A", "NUT308A"] },
-  "MEN402B": { nombre: "Gestión en Organizaciones de Salud", req: ["NUT209A"] },
-  "FG1": { nombre: "Formación General" },
-  "FG2": { nombre: "Formación General" },
-  "NUT408A": { nombre: "Integrado de Nutrición Humana de la Persona Mayor", req: ["NUT305A", "NUT306A"] },
-  "NUT409A": { nombre: "Integrado de Nutrición Clínica Pediátrica", req: ["NUT208A", "NUT306A", "NUT308A"] },
-  "NUT405A": { nombre: "Administración y Gestión de Servicios de Alimentación", req: ["MEN302B", "MEN402B"] },
-  "NUT411A": { nombre: "Unidad de Investigación en Nutrición I", req: ["MEN201B", "NUT309A"] },
-  "NUT404A": { nombre: "Nutrición Comunitaria", req: ["NUT305A", "NUT307A", "NUT310A", "NUT409A", "MEN402B"] },
-  "NUT412A": { nombre: "Pasantías Profesionales en Nutrición", req: ["NUT309A", "NUT310A", "NUT405A", "NUT409A"] },
-  "NUT413A": { nombre: "Unidad de Investigación en Nutrición II", req: ["NUT411A"] },
-  "NUT501A": { nombre: "Internado Clínico Adulto", req: ["NUT404A", "NUT412A", "NUT413A"] },
-  "NUT502A": { nombre: "Internado Clínico Pediátrico", req: ["NUT404A", "NUT412A", "NUT413A"] },
-  "NUT507A": { nombre: "Internado Nutrición Deportiva", req: ["NUT404A", "NUT412A", "NUT413A"] },
-  "NUT508A": { nombre: "Internado Nutrición Comunitaria", req: ["NUT404A", "NUT412A", "NUT413A"] },
-  "NUT505A": { nombre: "Internado Alimentación Colectiva", req: ["NUT404A", "NUT412A", "NUT413A"] },
-  "NUT509A": { nombre: "Internado Electivo", req: ["NUT404A", "NUT412A", "NUT413A"] }
-};
+      "MAT100": { nombre: "Precálculo" },
+      "QIM201A": { nombre: "Química" },
+      "BIO141C": { nombre: "Biología de la Célula" },
+      "MEN102A": { nombre: "Morfología Humana" },
+      "NUT105A": { nombre: "Alimentos" },
+      "NUT101A": { nombre: "Introducción a la Nutrición" },
+      "FIS109N": { nombre: "Física para Nutrición", req: ["MAT100"] },
+      "QIM202N": { nombre: "Bioquímica General para Nutrición", req: ["QIM201A"] },
+      "BIO135N": { nombre: "Fisiología", req: ["MEN102A", "BIO141C"] },
+      "NUT106A": { nombre: "Ciencias de los Alimentos", req: ["QIM201A", "NUT105A"] },
+      "NUT107A": { nombre: "Técnicas Dietéticas y Planificación Alimentaria", req: ["NUT105A"] },
+      "MEN201B": { nombre: "Bioestadística", req: ["MAT100"] },
+      "NUT207A": { nombre: "Nutrición Básica", req: ["BIO135N", "QIM202N"] },
+      "MEN207A": { nombre: "Fisiopatología General", req: ["BIO135N"] },
+      "MEN302B": { nombre: "Microbiología e Higiene de los Alimentos", req: ["NUT105A", "NUT106A"] },
+      "TTF": { nombre: "Formación Teológica" },
+      "NUT208A": { nombre: "Integrado de Nutrición Humana Pediátrica", req: ["MEN207A", "NUT207A"] },
+      "NUT209A": { nombre: "Salud Pública y Epidemiológica Nutricional", req: ["NUT207A", "MEN201B"] },
+      "NUT204A": { nombre: "Fisiopatología Nutricional", req: ["MEN207A"] },
+      "MEN206A": { nombre: "Farmacología para Nutrición", req: ["NUT106A", "MEN207A"] },
+      "NUT211A": { nombre: "Nutrición y Deporte", req: ["NUT207A"] },
+      "NUT212A": { nombre: "Conducta Alimentaria", req: ["NUT207A"] },
+      "NUT305A": { nombre: "Integrado de Nutrición Humana del Adulto", req: ["NUT207A", "MEN302B"] },
+      "NUT306A": { nombre: "Educación Alimentaria", req: ["NUT212A", "NUT209A"] },
+      "NUT307A": { nombre: "Promoción, Prevención e Intervenciones Nutricionales", req: ["NUT209A"] },
+      "NUT308A": { nombre: "Integrado de Nutrición Clínica General", req: ["NUT207A", "MEN302B", "NUT204A"] },
+      "FIL2001": { nombre: "Filosofía" },
+      "IIQ2643": { nombre: "Procesamiento de Alimentos", req: ["MEN302B"] },
+      "NUT309A": { nombre: "Ética para Nutrición", req: ["NUT305A", "NUT308A"] },
+      "NUT310A": { nombre: "Integrado de Nutrición Clínica Adulto", req: ["NUT306A", "NUT308A"] },
+      "MEN402B": { nombre: "Gestión en Organizaciones de Salud", req: ["NUT209A"] },
+      "FG1": { nombre: "Formación General" },
+      "FG2": { nombre: "Formación General" },
+      "NUT408A": { nombre: "Integrado de Nutrición Humana de la Persona Mayor", req: ["NUT305A", "NUT306A"] },
+      "NUT409A": { nombre: "Integrado de Nutrición Clínica Pediátrica", req: ["NUT208A", "NUT306A", "NUT308A"] },
+      "NUT405A": { nombre: "Administración y Gestión de Servicios de Alimentación", req: ["MEN302B", "MEN402B"] },
+      "NUT411A": { nombre: "Unidad de Investigación en Nutrición I", req: ["MEN201B", "NUT309A"] },
+      "NUT404A": { nombre: "Nutrición Comunitaria", req: ["NUT305A", "NUT307A", "NUT310A", "NUT409A", "MEN402B"] },
+      "NUT412A": { nombre: "Pasantías Profesionales en Nutrición", req: ["NUT309A", "NUT310A", "NUT405A", "NUT409A"] },
+      "NUT413A": { nombre: "Unidad de Investigación en Nutrición II", req: ["NUT411A"] },
+      "NUT501A": { nombre: "Internado Clínico Adulto", req: ["NUT404A", "NUT412A", "NUT413A"] },
+      "NUT502A": { nombre: "Internado Clínico Pediátrico", req: ["NUT404A", "NUT412A", "NUT413A"] },
+      "NUT507A": { nombre: "Internado Nutrición Deportiva", req: ["NUT404A", "NUT412A", "NUT413A"] },
+      "NUT508A": { nombre: "Internado Nutrición Comunitaria", req: ["NUT404A", "NUT412A", "NUT413A"] },
+      "NUT505A": { nombre: "Internado Alimentación Colectiva", req: ["NUT404A", "NUT412A", "NUT413A"] },
+      "NUT509A": { nombre: "Internado Electivo", req: ["NUT404A", "NUT412A", "NUT413A"] }
+    };
     const semestres = [
-  ["MAT100", "QIM201A", "BIO141C", "MEN102A", "NUT105A", "NUT101A"],
-  ["FIS109N", "QIM202N", "BIO135N", "NUT106A", "NUT107A"],
-  ["MEN201B", "NUT207A", "MEN207A", "MEN302B", "TTF"],
-  ["NUT208A", "NUT209A", "NUT204A", "MEN206A", "NUT211A", "NUT212A"],
-  ["NUT305A", "NUT306A", "NUT307A", "NUT308A", "FIL2001"],
-  ["IIQ2643", "NUT309A", "NUT310A", "MEN402B", "FG1", "FG2"],
-  ["NUT408A", "NUT409A", "NUT405A", "NUT411A", "FG1", "FG2"],
-  ["NUT404A", "NUT412A", "NUT413A", "FG1", "FG2"],
-  ["NUT501A", "NUT502A", "NUT507A"],
-  ["NUT508A", "NUT505A", "NUT509A"]
-];
+      ["MAT100", "QIM201A", "BIO141C", "MEN102A", "NUT105A", "NUT101A"],
+      ["FIS109N", "QIM202N", "BIO135N", "NUT106A", "NUT107A"],
+      ["MEN201B", "NUT207A", "MEN207A", "MEN302B", "TTF"],
+      ["NUT208A", "NUT209A", "NUT204A", "MEN206A", "NUT211A", "NUT212A"],
+      ["NUT305A", "NUT306A", "NUT307A", "NUT308A", "FIL2001"],
+      ["IIQ2643", "NUT309A", "NUT310A", "MEN402B", "FG1", "FG2"],
+      ["NUT408A", "NUT409A", "NUT405A", "NUT411A", "FG1", "FG2"],
+      ["NUT404A", "NUT412A", "NUT413A", "FG1", "FG2"],
+      ["NUT501A", "NUT502A", "NUT507A"],
+      ["NUT508A", "NUT505A", "NUT509A"]
+    ];
 
     let completados = new Set(JSON.parse(localStorage.getItem('completadosNutri')) || []);
 
@@ -200,4 +203,5 @@
   </script>
 </body>
 </html>
+
 
