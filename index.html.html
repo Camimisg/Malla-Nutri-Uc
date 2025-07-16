@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<title>Malla Curricular Nutrición y Dietética</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #ede8f7; /* más morado claro de fondo */
+    margin: 0;
+    padding: 30px 20px 60px;
+    color: #4b3f72;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+  }
+  h1.titulo {
+    color: #5a45a5; /* morado vivo */
+    font-weight: 700;
+    font-size: 28px;
+    margin-bottom: 30px;
+    user-select: none;
+  }
+  main {
+    width: 100%;
+    max-width: 1400px;
+    overflow-x: auto;
+  }
+  #contenedor-semestres {
+    display: flex;
+    gap: 28px;
+    padding-bottom: 10px;
+  }
+  .semestre {
+    background: #d5c7f9; /* morado claro y vivo */
+    border-radius: 18px;
+    box-shadow: 0 10px 22px rgba(90, 69, 165, 0.3);
+    padding: 24px 18px;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    user-select: none;
+  }
+  .semestre h2 {
+    margin: 0 0 18px;
+    font-weight: 700;
+    font-size: 19px;
+    color: #3e2e74;
+  }
+  .cursos {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+  }
+  .curso {
+    background: #fff4ff; /* blanco con toque rosa/morado */
+    padding: 14px 22px;
+    border-radius: 20px;
+    box-shadow: 0 6px 16px rgba(90, 69, 165, 0.3);
+    cursor: pointer;
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+    color: #5a45a5;
+    user-select: none;
+    min-height: 48px;
+    align-items: center;
+  }
+  .curso:hover:not(.bloqueado):not(.completado) {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(90, 69, 165, 0.45);
+  }
+  .curso.completado {
+    color: #aa9de0;
+    text-decoration: line-through;
+    background: #cbbef8;
+    box-shadow: none;
+  }
+  .curso.bloqueado {
+    color: #b7b0d1;
+    background: #e4dffb;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+  /* Formación general, teológica y filosofía */
+  .curso.formacion-general {
+    background: #eee2fc;
+    color: #7f70c9;
+  }
+  .curso.formacion-general.completado {
+    background: #d7cafb;
+    color: #a494d6;
+    text-decoration: line-through;
+  }
+  .curso .nombre {
+    max-width: 70%;
+  }
+  .curso .creditos {
+    min-width: 30px;
+    text-align: right;
+    color: inherit;
+  }
+  .total-creditos {
+    margin-top: 14px;
+    font-weight: 700;
+    font-size: 16px;
+    color: #4b3f72;
+    width: 100%;
+    text-align: right;
+    user-select: none;
+  }
+  button#reiniciar {
+    margin-top: 30px;
+    background-color: #6e52c5;
+    color: #fff;
+    border: none;
+    border-radius: 30px;
+    padding: 16px 38px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(110, 82, 197, 0.6);
+    transition: background-color 0.3s ease;
+    user-select: none;
+  }
+  button#reiniciar:hover {
+    background-color: #5a3eb1;
+  }
+  @media (max-width: 650px) {
+    .semestre {
+      min-width: 260px;
+      padding: 20px 14px;
+    }
+    .curso {
+      font-size: 14px;
+      padding: 12px 16px;
+      min-height: 44px;
+    }
+    button#reiniciar {
+      width: 100%;
+      font-size: 17px;
+      padding: 14px 0;
+    }
+  }
+</style>
+</head>
+<body>
+
+<h1 class="titulo">Malla Curricular - Nutrición y Dietética UC</h1>
+
+<main>
+  <div id="contenedor-semestres"></div>
+</main>
+
+<button id="reiniciar">Reiniciar proceso</button>
+
+<script>
+  const malla = [
+    {
+      semestre: 1,
+      cursos: [
+        { id: "MAT100", nombre: "Precálculo (MAT100)", creditos: 10, requisitos: [] },
+        { id: "QIM201A", nombre: "Química (QIM201A)", creditos: 15, requisitos: [] },
+        { id: "BIO141C", nombre: "Biología de la Célula (BIO141C)", creditos: 10, requisitos: [] },
+        { id: "MEN102A", nombre: "Morfología Humana (MEN102A)", creditos: 10, requisitos: [] },
+        { id: "NUT105A", nombre: "Alimentos (NUT105A)", creditos: 5, requisitos: [] },
+        { id: "NUT101A", nombre: "Introducción a la Nutrición (NUT101A)", creditos: 5, requisitos: [] }
+      ]
+    },
+    {
+      semestre: 2,
+      cursos: [
+        { id: "FIS109N", nombre: "Física para Nutrición (FIS109N)", creditos: 5, requisitos: ["MAT100"] },
+        { id: "QIM202N", nombre: "Bioquímica General para Nutrición (QIM202N)", creditos: 10, requisitos: ["QIM201A"] },
+        { id: "BIO135N", nombre: "Fisiología (BIO135N)", creditos: 10, requisitos: ["MEN102A","BIO141C"] },
+        { id: "NUT106A", nombre: "Ciencias de los Alimentos (NUT106A)", creditos: 10, requisitos: ["QIM201A","NUT105A"] },
+        { id: "NUT107A", nombre: "Técnicas Dietéticas y Planificación Alimentaria (NUT107A)", creditos: 10, requisitos: ["NUT105A"] }
+      ]
+    },
+    {
+      semestre: 3,
+      cursos: [
+        { id: "MEN201B", nombre: "Bioestadística (MEN201B)", creditos: 10, requisitos: ["MAT100"] },
+        { id: "NUT207A", nombre: "Nutrición Básica (NUT207A)", creditos: 10, requisitos: ["BIO135N","QIM202N"] },
+        { id: "MEN207A", nombre: "Fisiopatología General (MEN207A)", creditos: 10, requisitos: ["BIO135N"] },
+        { id: "MEN302B", nombre: "Microbiología e Higiene de los Alimentos (MEN302B)", creditos: 10, requisitos: ["NUT105A","NUT106A"] },
+        { id: "TTF", nombre: "Formación Teológica (TTF)", creditos: 10, requisitos: [], formacionGeneral:true }
+      ]
+    },
+    {
+      semestre: 4,
+      cursos: [
+        { id: "NUT208A", nombre: "Integrado de Nutrición Humana Pediátrica (NUT208A)", creditos: 10, requisitos: ["MEN207A","NUT207A"] },
+        { id: "NUT209A", nombre: "Salud Pública y Epidemiológica Nutricional (NUT209A)", creditos: 10, requisitos: ["NUT207A","MEN201B"] },
+        { id: "NUT204A", nombre: "Fisiopatología Nutricional (NUT204A)", creditos: 10, requisitos: ["MEN207A"] },
+        { id: "MEN206A", nombre: "Farmacología para Nutrición (MEN206A)", creditos: 10, requisitos: ["NUT106A","MEN207A"] },
+        { id: "NUT211A", nombre: "Nutrición y Deporte (NUT211A)", creditos: 5, requisitos: ["NUT207A","NUT107A"] },
+        { id: "NUT212A", nombre: "Conducta Alimentaria (NUT212A)", creditos: 5, requisitos: ["NUT207A"] }
+      ]
+    },
+    {
+      semestre: 5,
+      cursos: [
+        { id: "NUT305A", nombre: "Integrado de Nutrición Humana del Adulto (NUT305A)", creditos: 10, requisitos: ["NUT207A","MEN302B"] },
+        { id: "NUT306A", nombre: "Educación Alimentaria (NUT306A)", creditos: 10, requisitos: ["NUT212A","NUT209A"] },
+        { id: "NUT307A", nombre: "Promoción, Prevención e Intervenciones Nutricionales (NUT307A)", creditos: 10, requisitos: ["NUT209A"] },
+        { id: "NUT308A", nombre: "Integrado de Nutrición Clínica General (NUT308A)", creditos: 10, requisitos: ["NUT207A","MEN302B","NUT204A"] },
+        { id: "FIL2001", nombre: "Filosofía (FIL2001)", creditos: 10, requisitos: [], formacionGeneral:true }
+      ]
+    },
+    {
+      semestre: 6,
+      cursos: [
+        { id: "IIQ2643", nombre: "Procesamiento de Alimentos (IIQ2643)", creditos: 10, requisitos: ["MEN302B"] },
+        { id: "NUT309A", nombre: "Etica para Nutrición (NUT309A)", creditos: 5, requisitos: ["NUT305A","NUT308A"] },
+        { id: "NUT310A", nombre: "Integrado de Nutrición Clínica Adulto (NUT310A)", creditos: 10, requisitos: ["NUT306A","NUT308A"] },
+        { id: "MEN402B", nombre: "Gestión en Organizaciones de Salud (MEN402B)", creditos: 5, requisitos: ["NUT209A"] },
+        { id: "FORMGEN1", nombre: "Formación General", creditos: 10, requisitos: [], formacionGeneral:true },
+        { id: "FORMGEN2", nombre: "Formación General", creditos: 10, requisitos: [], formacionGeneral:true }
+      ]
+    },
+    {
+      semestre: 7,
+      cursos: [
+        { id: "NUT408A", nombre: "Integrado de Nutrición Humana de la Persona Mayor (NUT408A)", creditos: 5, requisitos: ["NUT305A","NUT306A"] },
+        { id: "NUT409A", nombre: "Integrado de Nutrición Clínica Pediátrica (NUT409A)", creditos: 10, requisitos: ["NUT208A","NUT306A","NUT308A"] },
+        { id: "NUT405A", nombre: "Administración y Gestión de Servicios de Alimentación (NUT405A)", creditos: 10, requisitos: ["MEN302B","MEN402B"] },
+        { id: "NUT411A", nombre: "Unidad de Investigación en Nutrición I (NUT411A)", creditos: 5, requisitos: ["MEN201B","NUT309A"] },
+        { id: "FORMGEN3", nombre: "Formación General", creditos: 10, requisitos: [], formacionGeneral:true },
+        { id: "FORMGEN4", nombre: "Formación General", creditos: 10, requisitos: [], formacionGeneral:true }
+      ]
+    },
+    {
+      semestre: 8,
+      cursos: [
+        { id: "NUT404A", nombre: "Nutrición Comunitaria (NUT404A)", creditos: 10, requisitos: ["NUT305A","NUT307A","NUT310A","NUT409A","MEN402B"] },
+        { id: "NUT412A", nombre: "Pasantías Profesionales en Nutrición (NUT412A)", creditos: 10, requisitos: ["NUT309A","NUT310A","NUT405A","NUT409A"] },
+        { id: "NUT413A", nombre: "Unidad de Investigación en Nutrición II (NUT413A)", creditos: 10, requisitos: ["NUT411A"] },
+        { id: "FORMGEN5", nombre: "Formación General", creditos: 10, requisitos: [], formacionGeneral:true },
+        { id: "FORMGEN6", nombre: "Formación General", creditos: 10, requisitos: [], formacionGeneral:true }
+      ]
+    },
+    {
+      semestre: 9,
+      cursos: [
+        { id: "NUT501A", nombre: "Internado Clínico Adulto (NUT501A)", creditos: 20, requisitos: ["NUT404A","NUT412A","NUT413A"] },
+        { id: "NUT502A", nombre: "Internado Clínico Pediátrico (NUT502A)", creditos: 20, requisitos: ["NUT404A","NUT412A","NUT413A"] },
+        { id: "NUT507A", nombre: "Internado Nutrición Deportiva (NUT507A)", creditos: 10, requisitos: ["NUT404A","NUT412A","NUT413A"] }
+      ]
+    },
+    {
+      semestre: 10,
+      cursos: [
+        { id: "NUT508A", nombre: "Internado Nutrición Comunitaria (NUT508A)", creditos: 20, requisitos: ["NUT404A","NUT412A","NUT413A"] },
+        { id: "NUT505A", nombre: "Internado Alimentación Colectiva (NUT505A)", creditos: 20, requisitos: ["NUT404A","NUT412A","NUT413A"] },
+        { id: "NUT509A", nombre: "Internado Electivo (NUT509A)", creditos: 10, requisitos: ["NUT404A","NUT412A","NUT413A"] }
+      ]
+    }
+  ];
+
+  let cursosCompletados = new Set(JSON.parse(localStorage.getItem('cursosCompletados') || '[]'));
+
+  const contenedor = document.getElementById("contenedor-semestres");
+
+  function estaDesbloqueado(curso) {
+    if (curso.formacionGeneral) return true;
+    if (curso.requisitos.length === 0) return true;
+    return curso.requisitos.every(req => cursosCompletados.has(req));
+  }
+
+  function actualizarVista() {
+    contenedor.innerHTML = "";
+
+    malla.forEach(({ semestre, cursos }) => {
+      const totalCreditos = cursos.reduce((acc, c) => acc + c.creditos, 0);
+      const cursosHTML = cursos.map(curso => {
+        const completado = cursosCompletados.has(curso.id);
+        const desbloqueado = estaDesbloqueado(curso);
+
+        const clases = [];
+        if (completado) clases.push("completado");
+        if (!desbloqueado) clases.push("bloqueado");
+        if (curso.formacionGeneral) clases.push("formacion-general");
+
+        return `
+          <div class="curso ${clases.join(' ')}" data-id="${curso.id}" title="${curso.nombre} - Créditos: ${curso.creditos}">
+            <div class="nombre">${curso.nombre}</div>
+            <div class="creditos">${curso.creditos}</div>
+          </div>
+        `;
+      }).join("");
+
+      contenedor.insertAdjacentHTML("beforeend", `
+        <section class="semestre">
+          <h2>Semestre ${semestre}</h2>
+          <div class="cursos">${cursosHTML}</div>
+          <div class="total-creditos"><span>${totalCreditos}</span> créditos</div>
+        </section>
+      `);
+    });
+
+    document.querySelectorAll(".curso").forEach(el => {
+      const id = el.dataset.id;
+      const curso = malla.flatMap(s => s.cursos).find(c => c.id === id);
+      if (!curso) return;
+      if (!estaDesbloqueado(curso)) return;
+
+      el.onclick = () => {
+        if (cursosCompletados.has(id)) {
+          cursosCompletados.delete(id);
+        } else {
+          cursosCompletados.add(id);
+        }
+        localStorage.setItem('cursosCompletados', JSON.stringify([...cursosCompletados]));
+        actualizarVista();
+      };
+    });
+  }
+
+  document.getElementById('reiniciar').onclick = () => {
+    cursosCompletados.clear();
+    localStorage.removeItem('cursosCompletados');
+    actualizarVista();
+  };
+
+  actualizarVista();
+</script>
+
+</body>
+</html>
